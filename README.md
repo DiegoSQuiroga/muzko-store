@@ -1,3 +1,38 @@
+# 🧢 Muzko Store
+
+**Muzko Store** is a fully functional urban clothing e-commerce site inspired by street art and youth culture.  
+Built with **React**, **TypeScript** and **Tailwind CSS**, it offers a dynamic and responsive experience, featuring real-time product filtering, a custom design system, and modular component structure.
+
+![Muzko Banner](./src/assets/bg-abstract.png)
+
+---
+
+## ✨ Features
+
+- 🎨 Urban and artistic design
+- 🔍 Real-time product filtering by category, gender and size
+- 🛒 Shopping cart and checkout interface
+- 📱 Fully responsive design
+- 🔧 Modular codebase (components, pages, features)
+- 🌐 Routing with React Router
+- 🧠 Strong typing with TypeScript
+- 🧱 Tailwind CSS with custom configuration and design tokens
+
+---
+
+## 🛠 Technologies Used
+
+| Tech         | Description                      |
+|--------------|----------------------------------|
+| React        | Component-based UI               |
+| TypeScript   | Type-safe JavaScript             |
+| Tailwind CSS | Utility-first CSS framework      |
+| Vite         | Lightning fast dev environment   |
+| React Router | Client-side routing              |
+| Framer Motion| Animations and transitions       |
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
