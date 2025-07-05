@@ -1,69 +1,93 @@
-// src/features/collection/Filters.tsx
 import { useState } from "react";
 
-interface Props {
-  onFilterChange: (filters: {
+interface FiltersProps {
+  filters: {
     category: string;
     gender: string;
     size: string;
-  }) => void;
+  };
+  onFilterChange: (field: keyof FiltersProps["filters"], value: string) => void;
+  onResetFilters: () => void;
 }
 
-export default function Filters({ onFilterChange }: Props) {
-  const [category, setCategory] = useState("");
-  const [gender, setGender] = useState("");
-  const [size, setSize] = useState("");
+export default function Filters({
+  filters,
+  onFilterChange,
+  onResetFilters,
+}: FiltersProps) {
+  const categories = ["buzo", "gorra", "remera"];
+  const genders = ["hombre", "mujer", "unisex"];
+  const sizes = ["S", "M", "L", "XL", "único"];
 
-  const handleChange = () => {
-    onFilterChange({ category, gender, size });
-  };
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const renderButtons = (
+    options: string[],
+    field: keyof FiltersProps["filters"]
+  ) =>
+    options.map((option) => {
+      const isSelected = filters[field] === option;
+      return (
+        <button
+          key={option}
+          onClick={() => onFilterChange(field, option)}
+          className={`px-3 py-1 text-sm rounded-full border whitespace-nowrap ${
+            isSelected
+              ? "bg-yellow-500 text-black font-bold"
+              : "bg-white text-black"
+          } transition`}
+        >
+          {option}
+        </button>
+      );
+    });
 
   return (
-    <div className="mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <select
-        value={category}
-        onChange={(e) => {
-          setCategory(e.target.value);
-          handleChange();
-        }}
-        className="p-2 rounded bg-neutral-800 text-white"
-      >
-        <option value="">Todas las categorías</option>
-        <option value="buzo">Buzo</option>
-        <option value="gorra">Gorra</option>
-        <option value="remera">Remera</option>
-      </select>
+    <div className="space-y-6 text-sm sm:text-base relative">
+      {/* Reset arriba derecha */}
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-neutral-400 font-semibold">Categoría:</span>
+        <button
+          onClick={onResetFilters}
+          className="text-sm text-white/70 hover:underline"
+        >
+          Reset
+        </button>
+      </div>
 
-      <select
-        value={gender}
-        onChange={(e) => {
-          setGender(e.target.value);
-          handleChange();
-        }}
-        className="p-2 rounded bg-neutral-800 text-white"
-      >
-        <option value="">Todos los géneros</option>
-        <option value="hombre">Hombre</option>
-        <option value="mujer">Mujer</option>
-        <option value="unisex">Unisex</option>
-      </select>
+      {/* Categoría visible siempre */}
+      <div className="flex flex-wrap gap-2">
+        {renderButtons(categories, "category")}
+      </div>
 
-      <select
-        value={size}
-        onChange={(e) => {
-          setSize(e.target.value);
-          handleChange();
-        }}
-        className="p-2 rounded bg-neutral-800 text-white"
-      >
-        <option value="">Todos los talles</option>
-        <option value="XS">XS</option>
-        <option value="S">S</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-        <option value="XL">XL</option>
-        <option value="Única">Única</option>
-      </select>
+      {/* Botón para mostrar filtros avanzados */}
+      <div className="mt-4">
+        <button
+          onClick={() => setShowAdvanced((prev) => !prev)}
+          className="bg-white text-black px-4 py-2 rounded-full text-sm font-semibold hover:bg-yellow-500 transition"
+        >
+          {showAdvanced ? "Ocultar otros filtros" : "Otros filtros"}
+        </button>
+      </div>
+
+      {/* Género y talle, si está abierto */}
+      {showAdvanced && (
+        <div className="space-y-4 mt-4">
+          <div>
+            <span className="text-neutral-400 font-semibold mr-2">Género:</span>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {renderButtons(genders, "gender")}
+            </div>
+          </div>
+
+          <div>
+            <span className="text-neutral-400 font-semibold mr-2">Talle:</span>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {renderButtons(sizes, "size")}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

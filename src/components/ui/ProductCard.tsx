@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useCart } from "../../context/useCart";
+import { Link, useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Product } from "../../types/productSlice";
 
@@ -6,39 +7,49 @@ interface Props {
   product: Product;
 }
 
+interface OutletContext {
+  openCart: () => void;
+}
+
 export default function ProductCard({ product }: Props) {
-  if (!product || !product.imageUrl) {
-    console.warn("Producto inválido:", product);
-    return null;
-  }
+  const { dispatch } = useCart();
+  const { openCart } = useOutletContext<OutletContext>();
+
+  const handleAddToCart = () => {
+    dispatch({ type: "ADD_TO_CART", payload: product });
+    openCart();
+  };
 
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="bg-neutral-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+      className="bg-neutral-900 rounded-xl overflow-hidden shadow-md transition flex flex-col"
     >
-      <motion.img
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
+      <img
         src={product.imageUrl}
         alt={product.name}
-        className="w-full h-64 object-cover"
+        className="w-full h-60 object-cover"
       />
 
-      <div className="p-5 flex flex-col justify-between h-[180px]">
-        <h2 className="text-lg md:text-xl font-semibold tracking-tight text-white mb-2">
-          {product.name}
-        </h2>
+      <div className="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <h2 className="text-xl font-bold">{product.name}</h2>
+          <p className="text-sm text-neutral-400">{product.description}</p>
+        </div>
 
-        <div className="mt-auto flex justify-between items-center">
-          <p className="text-white font-bold text-base">${product.price}</p>
+        <div className="mt-4 flex flex-col gap-2">
+          <button
+            onClick={handleAddToCart}
+            className="bg-yellow-500 text-black px-4 py-2 rounded-full hover:bg-red-500 transition font-semibold"
+          >
+            Agregar al carrito
+          </button>
+
           <Link
             to={`/product/${product.id}`}
-            className="px-4 py-2 text-sm rounded-full font-semibold transition-all duration-300
-                       bg-white text-black shadow-md hover:bg-gradient-to-r hover:from-black hover:to-neutral-800
-                       hover:text-white border border-white"
+            className="text-sm text-center text-yellow-400 hover:underline"
           >
-            Ver más
+            Ver más detalles
           </Link>
         </div>
       </div>

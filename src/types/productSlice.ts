@@ -1,10 +1,15 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
+  category: string;
+  gender: string;
+  sizes: string[];
   price: number;
   imageUrl: string;
-  category: "buzo" | "remera" | "gorra";
-  gender: "hombre" | "mujer" | "unisex";
-  sizes: string[];
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
 }

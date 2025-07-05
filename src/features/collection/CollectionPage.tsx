@@ -1,4 +1,3 @@
-// src/features/collection/CollectionPage.tsx
 import { useState } from "react";
 import { mockProducts } from "../../services/mockProducts";
 import ProductCard from "../../components/ui/ProductCard";
@@ -11,14 +10,29 @@ export default function CollectionPage() {
     size: "",
   });
 
+  const handleFilterChange = (field: keyof typeof filters, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [field]: prev[field] === value ? "" : value, // toggle
+    }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters({ category: "", gender: "", size: "" });
+  };
+
   const filteredProducts = mockProducts.filter((product) => {
-    const categoryMatch = filters.category ? product.category === filters.category : true;
-    const genderMatch = filters.gender ? product.gender === filters.gender : true;
-    const sizeMatch = filters.size
+    const matchCategory = filters.category
+      ? product.category === filters.category
+      : true;
+    const matchGender = filters.gender
+      ? product.gender === filters.gender
+      : true;
+    const matchSize = filters.size
       ? product.sizes.includes(filters.size)
       : true;
 
-    return categoryMatch && genderMatch && sizeMatch;
+    return matchCategory && matchGender && matchSize;
   });
 
   return (
@@ -28,21 +42,24 @@ export default function CollectionPage() {
           Nuestra Colección
         </h1>
         <p className="text-neutral-400 text-center max-w-2xl mx-auto mb-10">
-          Descubrí las prendas de arte urbano que transforman cada trazo en una prenda con identidad.
+          Descubrí las prendas de arte urbano que transforman cada trazo en una
+          prenda con identidad.
         </p>
 
-        {/* Filtros funcionales */}
-        <Filters onFilterChange={setFilters} />
+        <Filters
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onResetFilters={handleResetFilters}
+        />
 
-        {/* Productos filtrados */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))
           ) : (
             <p className="text-center text-neutral-400 col-span-full">
-              No se encontraron productos con esos filtros.
+              No se encontraron productos.
             </p>
           )}
         </div>
