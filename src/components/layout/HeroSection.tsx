@@ -15,7 +15,8 @@ export default function HeroSection() {
       {/* Contenido */}
       <div className="max-w-3xl z-10 px-4">
         <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-wide drop-shadow-[0_3px_8px_rgba(0,0,0,0.8)] text-[#f3f3f3]">
-          Arte urbano. Vestite con identidad.
+          <div>Arte Urbano</div>
+          <div>Busca tu identidad</div>
         </h1>
         <p className="text-xl md:text-2xl text-[#e0e0e0] drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] mb-8 leading-relaxed">
           Muzko Ink transforma cada prenda en una obra de arte. Colores intensos, trazos rebeldes y cultura callejera en su máxima expresión.
