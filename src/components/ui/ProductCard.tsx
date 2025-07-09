@@ -46,10 +46,10 @@ export default function ProductCard({ product }: Props) {
           </button>
 
           <Link
-            to={`/product/${product.id}`}
+           to={`/product/${String(product.id)}`} // <- 👈 forzamos que sea string
             className="text-sm text-center text-yellow-400 hover:underline"
           >
-            Ver más detalles
+          Ver más detalles
           </Link>
         </div>
       </div>

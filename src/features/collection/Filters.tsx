@@ -15,7 +15,7 @@ export default function Filters({
   onFilterChange,
   onResetFilters,
 }: FiltersProps) {
-  const categories = ["buzo", "gorra", "remera"];
+  const categories = ["buzos", "gorras", "remeras","chalecos"];
   const genders = ["hombre", "mujer", "unisex"];
   const sizes = ["S", "M", "L", "XL", "único"];
 

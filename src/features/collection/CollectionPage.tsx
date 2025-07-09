@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { mockProducts } from "../../services/mockProducts";
+import { useEffect, useState } from "react";
+import { getAllProducts } from "../../services/productService";
 import ProductCard from "../../components/ui/ProductCard";
 import Filters from "./Filters";
+import type { Product } from "../../types/productSlice";
 
 export default function CollectionPage() {
   const [filters, setFilters] = useState({
@@ -10,10 +11,28 @@ export default function CollectionPage() {
     size: "",
   });
 
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error al cargar productos:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+
   const handleFilterChange = (field: keyof typeof filters, value: string) => {
     setFilters((prev) => ({
       ...prev,
-      [field]: prev[field] === value ? "" : value, // toggle
+      [field]: prev[field] === value ? "" : value,
     }));
   };
 
@@ -21,7 +40,7 @@ export default function CollectionPage() {
     setFilters({ category: "", gender: "", size: "" });
   };
 
-  const filteredProducts = mockProducts.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchCategory = filters.category
       ? product.category === filters.category
       : true;
@@ -53,7 +72,9 @@ export default function CollectionPage() {
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10">
-          {filteredProducts.length > 0 ? (
+          {loading ? (
+            <p className="text-center col-span-full">Cargando productos...</p>
+          ) : filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))

@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { mockProducts } from "../services/mockProducts";
 import { useCart } from "../context/useCart";
 import { useOutletContext } from "react-router-dom";
+import { getProductById } from "../services/productService";
 import { X } from "lucide-react";
 import type { Product } from "../types/productSlice";
 
@@ -13,7 +14,34 @@ export default function ProductDetail() {
   const { id } = useParams();
   const { dispatch } = useCart();
   const { openCart } = useOutletContext<OutletContext>();
-  const product: Product | undefined = mockProducts.find((p) => p.id === Number(id));
+
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        if (id) {
+          const data = await getProductById(id);
+          setProduct(data);
+        }
+      } catch (error) {
+        console.error("Error al cargar el producto:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="text-white text-center mt-20">
+        <h2 className="text-2xl">Cargando producto...</h2>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -36,7 +64,6 @@ export default function ProductDetail() {
 
   return (
     <section className="min-h-screen bg-black text-white px-6 py-10 relative">
-      {/* Botón para volver */}
       <Link to="/collection" className="absolute top-6 right-6 text-white hover:text-red-500">
         <X size={28} />
       </Link>

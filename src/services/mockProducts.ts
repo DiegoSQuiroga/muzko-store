@@ -5,7 +5,7 @@ import remera1 from "../assets/remera1.png"; // 👈 nuevo import
 
 export const mockProducts: Product[] = [
   {
-    id: 1,
+    id: "1",
     name: "Buzo Galaxia",
     description: "Diseño exclusivo con tonos galácticos.",
     price: 11990,
@@ -15,7 +15,7 @@ export const mockProducts: Product[] = [
     sizes: ["S", "M", "L"],
   },
   {
-    id: 2,
+    id: "2",
     name: "Gorra Neón",
     description: "Estilo urbano con detalles brillantes.",
     price: 5990,
@@ -25,7 +25,7 @@ export const mockProducts: Product[] = [
     sizes: ["Única"],
   },
   {
-    id: 3,
+    id: "3",
     name: "Remera Grafitti", // 👈 nuevo producto
     description: "Ilustración única inspirada en el arte callejero.",
     price: 7990,

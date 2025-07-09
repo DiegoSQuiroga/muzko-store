@@ -39,13 +39,43 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
             >
               <div>
                 <p className="font-semibold">{item.product.name}</p>
-                <p className="text-sm text-gray-600">
-                  Cantidad: {item.quantity}
-                </p>
+
+                {/* Controles de cantidad */}
+                <div className="flex items-center gap-2 mt-1">
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "DECREASE_QUANTITY",
+                        payload: item.product.id,
+                      })
+                    }
+                    className="px-2 py-1 bg-gray-200 rounded text-black"
+                  >
+                    −
+                  </button>
+
+                  <span>{item.quantity}</span>
+
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "INCREASE_QUANTITY",
+                        payload: item.product.id,
+                      })
+                    }
+                    className="px-2 py-1 bg-gray-200 rounded text-black"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
+
               <button
                 onClick={() =>
-                  dispatch({ type: "REMOVE_FROM_CART", payload: item.product.id })
+                  dispatch({
+                    type: "REMOVE_FROM_CART",
+                    payload: item.product.id,
+                  })
                 }
                 className="text-red-500 text-sm"
               >
